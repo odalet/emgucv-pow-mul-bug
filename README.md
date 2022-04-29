@@ -6,11 +6,13 @@ When targeting .NET 4.8/OpenCL and running on the GPU, `CvInvoke.Pow(umat, 2, de
 
 The different results are probably due to the GPU rounding behavior, however this difference does not appear:
 
-* When running on the CPU
-* When targeting .NET 6 (be it on the CPU or the GPU)
+* When targeting .NET 4.8 and running on the CPU
 * When targeting .NET 4.8 but using the NVidia GPU
+* When targeting .NET 6 (be it on the CPU or on Intel GPU or on NVidia GPU)
 
-The values with .NET 6 are the same as .NET 4/CPU. .NET 4/Intel GPU is the only outlier.
+The values with .NET 6 are the same as .NET 4 on CPU. 
+
+.NET 4 with Intel GPU is the only outlier.
 
 To sum it up, the weird behavior only appears when using .NET 4.8 and the Intel GPU. In all other cases (CPU vs GPU, NVidia vs Intel or .NET 6 vs .NET 4.8), the results are the same.
 

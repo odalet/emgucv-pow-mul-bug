@@ -12,8 +12,8 @@ namespace NormalizeTest4
         private static void Main(string[] args)
         {
             var enableOpenCL = !args.Select(a => a.ToLowerInvariant()).Contains("--noopencl");
-            //if (enableOpenCL)
-            //    Utils.SetOpenCLDeviceConfiguration("Intel:GPU:");
+            if (enableOpenCL)
+                Utils.SetOpenCLDeviceConfiguration("Intel:GPU:");
             Utils.EnableOpenCL(enableOpenCL);
 
             Console.WriteLine("Configuration:");
@@ -33,6 +33,8 @@ namespace NormalizeTest4
 
             var kind = enableOpenCL ? "ocl" : "cpu";
             var gpu = enableOpenCL ? Device.Default.VendorName.Split(' ')[0].ToLowerInvariant().Replace("(r)", "") : "none";
+
+            // Here comes the test
 
             var inputFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "u.png");
             using (var input = new Image<Gray, byte>(inputFile))
@@ -59,6 +61,8 @@ namespace NormalizeTest4
                 writer.Write(umat.Bytes.Length);
                 writer.Write(umat.Bytes);
             }
+
+            Console.WriteLine($"File {filename} was saved");
         }
     }
 }

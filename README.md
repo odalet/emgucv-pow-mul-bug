@@ -1,6 +1,6 @@
 # emgucv-pow-mul-bug
 
-Exhibits a weird behavior in Emgu.CV:
+Exhibits a weird behavior in [Emgu.CV](https://github.com/emgucv/emgucv):
 
 When targeting .NET 4.8/OpenCL and running on the GPU, `CvInvoke.Pow(umat, 2, destination)` gives results different from `CvInvoke.Multiply(umat, umat, destination)`.
 

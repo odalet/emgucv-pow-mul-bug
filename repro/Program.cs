@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Emgu.CV;
+using Emgu.CV.Ocl;
 using Emgu.CV.Structure;
 
 namespace NormalizeTest4
@@ -11,9 +12,18 @@ namespace NormalizeTest4
         private static void Main(string[] args)
         {
             var enableOpenCL = !args.Select(a => a.ToLowerInvariant()).Contains("--noopencl");
-            if (enableOpenCL)
-                Utils.SetOpenCLDeviceConfiguration("Intel:GPU:");
+            //if (enableOpenCL)
+            //    Utils.SetOpenCLDeviceConfiguration("Intel:GPU:");
             Utils.EnableOpenCL(enableOpenCL);
+
+            Console.WriteLine("Configuration:");
+            Console.WriteLine($"  Architecture: {(IntPtr.Size == 8 ? "x64" : "x86")}");
+            Console.WriteLine($"  OpenCL GPU      : {CvInvoke.HaveOpenCLCompatibleGpuDevice}");
+            Console.WriteLine($"  OpenCL Support  : {CvInvoke.HaveOpenCL}");
+            Console.WriteLine($"  OpenCL Activated: {CvInvoke.UseOpenCL}");
+
+            if (enableOpenCL)
+                Console.WriteLine($"Current default OpenCL Device is: {Device.Default.Name}");
 
 #if NETFRAMEWORK
             var fx = "net48";
@@ -22,6 +32,7 @@ namespace NormalizeTest4
 #endif
 
             var kind = enableOpenCL ? "ocl" : "cpu";
+            var gpu = enableOpenCL ? Device.Default.VendorName.Split(' ')[0].ToLowerInvariant().Replace("(r)", "") : "none";
 
             var inputFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "u.png");
             using (var input = new Image<Gray, byte>(inputFile))
@@ -33,8 +44,8 @@ namespace NormalizeTest4
                 CvInvoke.Pow(floats, 2, pow);
                 CvInvoke.Multiply(floats, floats, mul);
 
-                Save(pow, $@"c:\temp\pow-{fx}-{kind}.bin");
-                Save(mul, $@"c:\temp\mul-{fx}-{kind}.bin");
+                Save(pow, $@"c:\temp\pow-{fx}-{kind}-{gpu}.bin");
+                Save(mul, $@"c:\temp\mul-{fx}-{kind}-{gpu}.bin");
             }
         }
 

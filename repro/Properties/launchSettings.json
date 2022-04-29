@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "repro": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    },
+    "repro No OpenCL": {
+      "commandName": "Project",
+      "commandLineArgs": "--noopencl"
+    }
+  }
+}
